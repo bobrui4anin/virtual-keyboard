@@ -1,0 +1,73 @@
+html {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.container {
+    margin: 0 auto;
+    width: 650px;
+}
+
+.text-input {
+    width: 645px;
+    height: 250px;
+    margin-bottom: 25px;
+}
+
+[data-key="Backspace"],
+[data-key="Tab"] {
+    flex-basis: 20%;
+}
+
+[data-key="Enter"],
+[data-key="ShiftRight"] {
+    flex-basis: 12.93%;
+}
+
+[data-key="CapsLock"],
+[data-key="ShiftLeft"] {
+    flex-basis: 16%;
+}
+
+[data-key="Space"] {
+    flex-basis: 50%;
+}
+
+.shift-off,
+.inactive {
+    display: none;
+}
+
+.clicked {
+    background-color: #3cf63c;
+    color: #fff;
+}
+
+
+.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    width: 650px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+}
+
+.active .shift-on {
+    min-width: 40px;
+    height: 40px;
+    border: 1px solid green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 1px;
+}
+
+div.key:hover {
+    cursor: pointer;
+    background-color: #3cf63c;
+    opacity: .7;
+}

@@ -128,6 +128,15 @@ const keyDownUpMouseClickHandler = (e) => {
             }
         }
     }
+
+    // Клик мыши
+    if (e.type === 'click' && e.target.tagName === 'SPAN') {
+        e.target.closest('.key').classList.add('clicked');
+        setTimeout(() => {
+            e.target.closest('.key').classList.remove('clicked');
+            handleCases(e.target.closest('.key').getAttribute('data-key'), 'mouseCLick', textareaValue);
+        }, 100);
+    }
 }
 
 // меняем классы у кнопок и прячем не активные

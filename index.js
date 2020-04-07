@@ -105,6 +105,42 @@ const keyDownUpMouseClickHandler = (e) => {
 
         handleCases(e.code, 'keyboardBtn', textareaValue);
     }
+
+    // При отжатии кнопки на клавиатуре
+    if (e.type === 'keyup') {
+        switch (e.code) {
+            case 'ShiftRight':
+            case 'ShiftLeft':
+                if (shiftEntered) {
+                    changeState();
+                }
+                shiftEntered = false;
+                break;
+        }
+
+        for (let i = 0; i < keysBlock.length; i++) {
+            if (keysBlock[i].getAttribute('data-key') === e.code) {
+                // Обрабатываем нажатие capslock, если нажали 1ый раз, то оставляем его активным
+                if (e.code == 'CapsLock' && capsLockEntered) {
+                    continue;
+                }
+                keysBlock[i].classList.remove('clicked');
+            }
+        }
+    }
+}
+
+// меняем классы у кнопок и прячем не активные
+const changeState = () => {
+    let currentState = document.querySelectorAll('.shift-on'),
+        offState = document.querySelectorAll('.shift-off');
+
+    currentState.forEach((key, indx) => {
+        key.classList.remove('shift-on');
+        key.classList.add('shift-off');
+        offState[indx].classList.remove('shift-off');
+        offState[indx].classList.add('shift-on');
+    });
 }
 
 const keysObj = {

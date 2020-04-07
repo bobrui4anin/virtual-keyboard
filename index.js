@@ -152,6 +152,163 @@ const changeState = () => {
     });
 }
 
+/* обработка всех кейсов для нажатой клавиши на клавиатуре и при клике на мышке 
+(eventHandler - событие, setup - мышь или клава, textareaValue - вэлью textarea)*/
+const handleCases = (eventHandler, setup, textareaValue) => {
+    // позиция каретки
+    let currentPosition = 0;
+    if (document.selection) {
+        textareaValue.focus();
+        let Sel = document.selection.createRange();
+        Sel.moveStart('character', -textareaValue.value.length);
+        currentPosition = Sel.text.length;
+    } else if (textareaValue.selectionStart || textareaValue.selectionStart == '0') {
+        currentPosition = textareaValue.selectionStart;
+    }
+
+    // обрабатываем функциональные кнопки
+    switch (eventHandler) {
+        case 'CapsLock':
+            changeState();
+            capsLockEntered = !capsLockEntered;
+
+            if (setup == 'mouseCLick') {
+                if (capsLockEntered) {
+                    document.querySelector(`[data-key="${eventHandler}"`).classList.add('clicked');
+                } else {
+                    document.querySelector(`[data-key="${eventHandler}"`).classList.remove('clicked');
+                }
+            }
+            break;
+        case 'Space':
+            textareaValue.value += ' ';
+            break;
+        case 'Tab':
+            textareaValue.value += '\t';
+            break;
+        case 'ShiftRight':
+        case 'ShiftLeft':
+            // обработка шифта по клику мышью
+            if (setup == 'mouseCLick') {
+                shiftEntered = true;
+                setTimeout(() => {
+                    changeState();
+                }, 10);
+                setTimeout(() => {
+                    changeState();
+                }, 100);
+                shiftEntered = false;
+                return;
+            }
+
+            shiftEntered = true;
+            changeState();
+            break;
+        case 'Backspace':
+            if (textareaValue.value.length > 0) {
+                let res = '';
+                for (let i = 0; i < textareaValue.value.length; i++) {
+                    if (currentPosition - 1 == i) {
+                        continue;
+                    }
+                    res += textareaValue.value[i];
+                }
+                textareaValue.value = res;
+
+                if (currentPosition == 0) {
+                    return;
+                } else {
+                    currentPosition--;
+                    textareaValue.setSelectionRange(currentPosition, currentPosition);
+                }
+            }
+            break;
+        case 'Enter':
+            textareaValue.value += '\n';
+            break;
+        case 'Delete':
+            if (textareaValue.value.length > 0 && currentPosition != textareaValue.value.length) {
+                let res = '';
+                for (let i = 0; i < textareaValue.value.length; i++) {
+                    if (currentPosition == i) {
+                        continue;
+                    }
+                    res += textareaValue.value[i];
+                }
+                textareaValue.value = res;
+                textareaValue.setSelectionRange(currentPosition, currentPosition);
+            }
+            break;
+        case 'ArrowLeft':
+            textareaValue.focus();
+            if (currentPosition == 0) {
+                textareaValue.setSelectionRange(currentPosition, currentPosition);
+            } else {
+                currentPosition--;
+                textareaValue.setSelectionRange(currentPosition, currentPosition);
+            }
+            break;
+        case 'ArrowRight':
+            textareaValue.focus();
+            if (currentPosition == textareaValue.value.length) {
+                textareaValue.setSelectionRange(currentPosition, currentPosition);
+            } else {
+                currentPosition++;
+                textareaValue.setSelectionRange(currentPosition, currentPosition);
+            }
+            break;
+        case 'NumpadDivide':
+            textareaValue.value += '/';
+            break;
+        case 'NumpadMultiply':
+            textareaValue.value += '*';
+            break;
+        case 'NumpadSubtract':
+            textareaValue.value += '-';
+            break;
+        case 'NumpadAdd':
+            textareaValue.value += '+';
+            break;
+        case 'NumpadEnter':
+            textareaValue.value += '\n';
+            break;
+        case 'NumpadDecimal':
+            textareaValue.value += '.';
+            break;
+        case 'NumLock':
+        case 'ControlLeft':
+        case 'ControlRight':
+        case 'AltLeft':
+        case 'AltRight':
+        case 'Escape':
+        case 'Insert':
+        case 'MetaLeft':
+        case 'Home':
+        case 'End':
+        case 'PageUp':
+        case 'PageDown':
+        case 'IntlBackslash':
+        case 'ContextMenu':
+            break;
+        default:
+            // Отключаем F1-F12, и выводим numpad
+            for (let i = 0; i <= 12; i++) {
+                if (eventHandler == `F${i}`) {
+                    if (eventHandler == 'F5') {
+                        location.href = location.href;
+                    }
+                    textareaValue.value += '';
+                    return;
+                }
+                if (eventHandler == `Numpad${i}`) {
+                    textareaValue.value += i;
+                    return;
+                }
+            }
+            textareaValue.value += document.querySelector(`[data-key="${eventHandler}"] .active .shift-on`).innerText;
+    }
+}
+
 const keysObj = {
     ru: ['ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace',
         'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', 'Del',

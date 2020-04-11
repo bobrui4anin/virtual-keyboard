@@ -1,6 +1,11 @@
-let languageInLocalStorage = "ru";
 let shiftEntered = false;
 let capsLockEntered = false;
+
+// проверяем язык в localstorage, если его нету, то устанавливаем дефолтный
+// Возможные языки ru / eng
+if (localStorage.getItem("language") === null) {
+  localStorage.setItem("language", "ru");
+}
 
 const keysObj = {
   ru: ["ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace",
@@ -36,13 +41,6 @@ const keysObj = {
   ],
 };
 
-// проверяем язык в localstorage, если его нету устанавливаем дефолтный (ru)
-if (localStorage.getItem("language")) {
-  languageInLocalStorage = localStorage.getItem("language");
-} else {
-  localStorage.setItem("language", "ru");
-}
-
 // Функция для создания узлов (узел, классы)
 const createNode = (node, ...classes) => {
   const createdElement = document.createElement(node);
@@ -55,6 +53,7 @@ const createAllElementsOnPage = () => {
   const keyboardWrapper = createNode("div", "container");
   const textarea = createNode("textarea", "text-input");
   const keyboard = createNode("div", "keyboard");
+  const languageInLocalStorage = localStorage.getItem("language");
   let template = "";
 
   for (let i = 0; i < keysObj.ru.length; i += 1) {

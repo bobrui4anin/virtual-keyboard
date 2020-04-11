@@ -186,21 +186,17 @@ const handleKey = (key, setup, textarea) => {
       break;
     case "ArrowLeft":
       textarea.focus();
-      if (currentPosition === 0) {
-        textarea.setSelectionRange(currentPosition, currentPosition);
-      } else {
+      if (currentPosition !== 0) {
         currentPosition -= 1;
-        textarea.setSelectionRange(currentPosition, currentPosition);
       }
+      textarea.setSelectionRange(currentPosition, currentPosition);
       break;
     case "ArrowRight":
       textarea.focus();
-      if (currentPosition === textarea.value.length) {
-        textarea.setSelectionRange(currentPosition, currentPosition);
-      } else {
+      if (currentPosition !== textarea.value.length) {
         currentPosition += 1;
-        textarea.setSelectionRange(currentPosition, currentPosition);
       }
+      textarea.setSelectionRange(currentPosition, currentPosition);
       break;
     case "NumpadDivide":
       textarea.value += "/";

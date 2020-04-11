@@ -9,6 +9,25 @@ body {
     background: cadetblue;
 }
 
+/* Классы (.off, .lng-eng, .lng-ru) - относятся к body */
+.shift-on,
+.off .shift-off {
+    min-width: 40px;
+    height: 40px;
+    border: 1px solid green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 1px 4px 2px;
+}
+
+.off .shift-on,
+.shift-off,
+.lng-eng .ru,
+.lng-ru .eng {
+    display: none;
+}
+
 .container {
     margin: 0 auto;
     width: 650px;
@@ -49,11 +68,6 @@ body {
     flex-basis: 50%;
 }
 
-.shift-off,
-.inactive {
-    display: none;
-}
-
 .clicked {
     background-color: #3cf63c;
     color: #fff;
@@ -79,16 +93,6 @@ body {
 .row {
     display: flex;
     width: 100%;
-}
-
-.active .shift-on {
-    min-width: 40px;
-    height: 40px;
-    border: 1px solid green;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 1px 4px 2px;
 }
 
 div.key:hover {

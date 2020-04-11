@@ -3,8 +3,12 @@ let capsLockEntered = false;
 
 // проверяем язык в localstorage, если его нету, то устанавливаем дефолтный
 // Возможные языки ru / eng
+// Добавляем body активный класс
 if (localStorage.getItem("language") === null) {
   localStorage.setItem("language", "ru");
+  document.body.classList.add(`lng-${localStorage.getItem("language")}`);
+} else {
+  document.body.classList.add(`lng-${localStorage.getItem("language")}`);
 }
 
 const keysObj = {
@@ -62,7 +66,7 @@ const createAllElementsOnPage = () => {
     }
     template += `
             <div class="key" data-key="${keysObj.keyCodes[i]}">
-                <span class="ru ${languageInLocalStorage === "ru" ? "active" : "inactive"}">
+                <span class="ru">
                     <span class="shift-on">
                         ${keysObj.ru[i]}
                     </span>
@@ -70,7 +74,7 @@ const createAllElementsOnPage = () => {
                         ${keysObj.ruShift[i]}
                     </span>
                 </span>
-                <span class="eng ${languageInLocalStorage === "eng" ? "active" : "inactive"}">
+                <span class="eng">
                     <span class="shift-on">
                         ${keysObj.eng[i]}
                     </span>
@@ -91,17 +95,9 @@ const createAllElementsOnPage = () => {
   document.body.append(keyboardWrapper);
 };
 
-// меняем классы у кнопок и прячем не активные
+// меняем у body класс в зависимости от нажатого шифта или CL
 const changeState = () => {
-  const currentState = document.querySelectorAll(".shift-on");
-  const offState = document.querySelectorAll(".shift-off");
-
-  currentState.forEach((key, indx) => {
-    key.classList.remove("shift-on");
-    key.classList.add("shift-off");
-    offState[indx].classList.remove("shift-off");
-    offState[indx].classList.add("shift-on");
-  });
+  document.body.classList.toggle('off');
 };
 
 /* обработка всех кейсов для нажатой клавиши на клавиатуре и при клике на мышке
@@ -256,7 +252,11 @@ const handleCases = (eventHandler, setup, textareaValue) => {
           return;
         }
       }
-      inputValue.value += document.querySelector(`[data-key="${eventHandler}"] .active .shift-on`).innerText;
+      if(document.body.classList.contains('off')) {
+        inputValue.value += document.querySelector(`[data-key="${eventHandler}"] .${localStorage.getItem("language")} .shift-off`).innerText;
+      } else {
+        inputValue.value += document.querySelector(`[data-key="${eventHandler}"] .${localStorage.getItem("language")} .shift-on`).innerText;
+      }
   }
 };
 
@@ -275,22 +275,16 @@ const keyDownUpMouseClickHandler = (e) => {
     });
     e.preventDefault();
 
-    // переключение языка
+    // переключение языка и перерендеринг элементов
     if (e.altKey && e.ctrlKey) {
-      const currentLanguageBlocks = document.querySelectorAll(".active");
-      const offLanguageBlocks = document.querySelectorAll(".inactive");
-
-      currentLanguageBlocks.forEach((currentBlock, indx) => {
-        currentBlock.classList.remove("active");
-        currentBlock.classList.add("inactive");
-        offLanguageBlocks[indx].classList.remove("inactive");
-        offLanguageBlocks[indx].classList.add("active");
-      });
-
       if (localStorage.getItem("language") === "ru") {
         localStorage.setItem("language", "eng");
+        document.body.classList.add('lng-eng');
+        document.body.classList.remove('lng-ru');
       } else {
         localStorage.setItem("language", "ru");
+        document.body.classList.add('lng-ru');
+        document.body.classList.remove('lng-eng');
       }
     }
 

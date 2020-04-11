@@ -57,7 +57,6 @@ const createAllElementsOnPage = () => {
   const keyboardWrapper = createNode("div", "container");
   const textarea = createNode("textarea", "text-input");
   const keyboard = createNode("div", "keyboard");
-  const languageInLocalStorage = localStorage.getItem("language");
   let template = "";
 
   for (let i = 0; i < keysObj.ru.length; i += 1) {
@@ -97,7 +96,7 @@ const createAllElementsOnPage = () => {
 
 // меняем у body класс в зависимости от нажатого шифта или CL
 const changeState = () => {
-  document.body.classList.toggle('off');
+  document.body.classList.toggle("off");
 };
 
 /* обработка всех кейсов для нажатой клавиши на клавиатуре и при клике на мышке
@@ -108,10 +107,10 @@ const handleCases = (eventHandler, setup, textareaValue) => {
   const inputValue = textareaValue;
   if (document.selection) {
     textareaValue.focus();
-    const Sel = document.selection.createRange();
-    Sel.moveStart("character", -textareaValue.value.length);
-    currentPosition = Sel.text.length;
-  } else if (textareaValue.selectionStart || textareaValue.selectionStart === "0") {
+    const selectionRng = document.selection.createRange();
+    selectionRng.moveStart("character", -textareaValue.value.length);
+    currentPosition = selectionRng.text.length;
+  } else if (textareaValue.selectionStart || textareaValue.selectionStart === 0) {
     currentPosition = textareaValue.selectionStart;
   }
 
@@ -252,7 +251,7 @@ const handleCases = (eventHandler, setup, textareaValue) => {
           return;
         }
       }
-      if(document.body.classList.contains('off')) {
+      if (document.body.classList.contains("off")) {
         inputValue.value += document.querySelector(`[data-key="${eventHandler}"] .${localStorage.getItem("language")} .shift-off`).innerText;
       } else {
         inputValue.value += document.querySelector(`[data-key="${eventHandler}"] .${localStorage.getItem("language")} .shift-on`).innerText;
@@ -279,12 +278,12 @@ const keyDownUpMouseClickHandler = (e) => {
     if (e.altKey && e.ctrlKey) {
       if (localStorage.getItem("language") === "ru") {
         localStorage.setItem("language", "eng");
-        document.body.classList.add('lng-eng');
-        document.body.classList.remove('lng-ru');
+        document.body.classList.add("lng-eng");
+        document.body.classList.remove("lng-ru");
       } else {
         localStorage.setItem("language", "ru");
-        document.body.classList.add('lng-ru');
-        document.body.classList.remove('lng-eng');
+        document.body.classList.add("lng-ru");
+        document.body.classList.remove("lng-eng");
       }
     }
 

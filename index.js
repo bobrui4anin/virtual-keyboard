@@ -37,10 +37,10 @@ const keysObj = {
 };
 
 // проверяем язык в localstorage, если его нету устанавливаем дефолтный (ru)
-if (!localStorage.getItem("language")) {
-  localStorage.setItem("language", "ru");
-} else {
+if (localStorage.getItem("language")) {
   languageInLocalStorage = localStorage.getItem("language");
+} else {
+  localStorage.setItem("language", "ru");
 }
 
 // Функция для создания узлов (узел, классы)

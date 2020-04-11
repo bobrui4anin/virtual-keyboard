@@ -58,9 +58,7 @@ const createAllElementsOnPage = () => {
   let template = "";
 
   for (let i = 0; i < keysObj.ru.length; i += 1) {
-    if (keysObj.keyCodes[i] === "Backquote" || keysObj.keyCodes[i] === "Tab"
-            || keysObj.keyCodes[i] === "CapsLock" || keysObj.keyCodes[i] === "ShiftLeft"
-            || keysObj.keyCodes[i] === "ControlLeft") {
+    if (["Backquote", "Tab", "CapsLock", "ShiftLeft", "ControlLeft"].includes(keysObj.keyCodes[i])) {
       template += "<div class=\"row\">";
     }
     template += `
@@ -83,9 +81,7 @@ const createAllElementsOnPage = () => {
                 </span>
             </div>
         `;
-    if (keysObj.keyCodes[i] === "Backspace" || keysObj.keyCodes[i] === "Delete"
-            || keysObj.keyCodes[i] === "Enter" || keysObj.keyCodes[i] === "ShiftRight"
-            || keysObj.keyCodes[i] === "ControlRight") {
+    if (["Backspace", "Delete", "Enter", "ShiftRight", "ControlRight"].includes(keysObj.keyCodes[i])) {
       template += "</div>";
     }
   }

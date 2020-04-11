@@ -237,7 +237,8 @@ const handleKey = (key, setup, textarea) => {
         if (key === `F${i}`) {
           return;
         }
-        if (key === `Numpad${i}`) {
+        if (i >= 0 && i <= 9 && key === `Numpad${i}`) {
+          console.log(`Numpad${i}`);
           textarea.value += i;
           return;
         }

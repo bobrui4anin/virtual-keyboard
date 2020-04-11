@@ -155,7 +155,7 @@ const handleKey = (key, setup, textarea) => {
       changeBodyClass();
       break;
     case "Backspace":
-      if (textarea.value.length > 0) {
+      if (textarea.value.length > 0 && currentPosition !== 0) {
         let res = "";
         for (let i = 0; i < textarea.value.length; i += 1) {
           if (currentPosition - 1 === i) {
@@ -165,11 +165,8 @@ const handleKey = (key, setup, textarea) => {
           }
         }
         textarea.value = res;
-
-        if (currentPosition !== 0) {
-          currentPosition -= 1;
-          textarea.setSelectionRange(currentPosition, currentPosition);
-        }
+        currentPosition -= 1;
+        textarea.setSelectionRange(currentPosition, currentPosition);
       }
       break;
     case "Enter":

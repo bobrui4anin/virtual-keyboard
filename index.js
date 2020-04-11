@@ -100,31 +100,31 @@ const changeState = () => {
 };
 
 /* обработка всех кейсов для нажатой клавиши на клавиатуре и при клике на мышке
-(eventHandler - событие, setup - мышь или клава, textareaValue - вэлью textarea) */
-const handleCases = (eventHandler, setup, textareaValue) => {
+(key - событие, setup - мышь или клава, textarea - вэлью textarea) */
+const handleKey = (key, setup, textarea) => {
   // позиция каретки
   let currentPosition = 0;
-  const inputValue = textareaValue;
+  const inputValue = textarea;
   if (document.selection) {
-    textareaValue.focus();
+    textarea.focus();
     const selectionRng = document.selection.createRange();
-    selectionRng.moveStart("character", -textareaValue.value.length);
+    selectionRng.moveStart("character", -textarea.value.length);
     currentPosition = selectionRng.text.length;
-  } else if (textareaValue.selectionStart || textareaValue.selectionStart === 0) {
-    currentPosition = textareaValue.selectionStart;
+  } else if (textarea.selectionStart || textarea.selectionStart === 0) {
+    currentPosition = textarea.selectionStart;
   }
 
   // обрабатываем функциональные кнопки
-  switch (eventHandler) {
+  switch (key) {
     case "CapsLock":
       changeState();
       capsLockEntered = !capsLockEntered;
 
       if (setup === "mouseCLick") {
         if (capsLockEntered) {
-          document.querySelector(`[data-key="${eventHandler}"`).classList.add("clicked");
+          document.querySelector(`[data-key="${key}"`).classList.add("clicked");
         } else {
-          document.querySelector(`[data-key="${eventHandler}"`).classList.remove("clicked");
+          document.querySelector(`[data-key="${key}"`).classList.remove("clicked");
         }
       }
       break;
@@ -156,20 +156,20 @@ const handleCases = (eventHandler, setup, textareaValue) => {
       changeState();
       break;
     case "Backspace":
-      if (textareaValue.value.length > 0) {
+      if (textarea.value.length > 0) {
         let res = "";
-        for (let i = 0; i < textareaValue.value.length; i += 1) {
+        for (let i = 0; i < textarea.value.length; i += 1) {
           if (currentPosition - 1 === i) {
             res += "";
           } else {
-            res += textareaValue.value[i];
+            res += textarea.value[i];
           }
         }
         inputValue.value = res;
 
         if (currentPosition !== 0) {
           currentPosition -= 1;
-          textareaValue.setSelectionRange(currentPosition, currentPosition);
+          textarea.setSelectionRange(currentPosition, currentPosition);
         }
       }
       break;
@@ -177,33 +177,33 @@ const handleCases = (eventHandler, setup, textareaValue) => {
       inputValue.value += "\n";
       break;
     case "Delete":
-      if (textareaValue.value.length > 0 && currentPosition !== textareaValue.value.length) {
+      if (textarea.value.length > 0 && currentPosition !== textarea.value.length) {
         let res = "";
-        for (let i = 0; i < textareaValue.value.length; i += 1) {
+        for (let i = 0; i < textarea.value.length; i += 1) {
           if (currentPosition !== i) {
             res += inputValue.value[i];
           }
         }
         inputValue.value = res;
-        textareaValue.setSelectionRange(currentPosition, currentPosition);
+        textarea.setSelectionRange(currentPosition, currentPosition);
       }
       break;
     case "ArrowLeft":
-      textareaValue.focus();
+      textarea.focus();
       if (currentPosition === 0) {
-        textareaValue.setSelectionRange(currentPosition, currentPosition);
+        textarea.setSelectionRange(currentPosition, currentPosition);
       } else {
         currentPosition -= 1;
-        textareaValue.setSelectionRange(currentPosition, currentPosition);
+        textarea.setSelectionRange(currentPosition, currentPosition);
       }
       break;
     case "ArrowRight":
-      textareaValue.focus();
-      if (currentPosition === textareaValue.value.length) {
-        textareaValue.setSelectionRange(currentPosition, currentPosition);
+      textarea.focus();
+      if (currentPosition === textarea.value.length) {
+        textarea.setSelectionRange(currentPosition, currentPosition);
       } else {
         currentPosition += 1;
-        textareaValue.setSelectionRange(currentPosition, currentPosition);
+        textarea.setSelectionRange(currentPosition, currentPosition);
       }
       break;
     case "NumpadDivide":
@@ -242,26 +242,26 @@ const handleCases = (eventHandler, setup, textareaValue) => {
     default:
       // Отключаем F1-F12, и выводим numpad
       for (let i = 0; i <= 12; i += 1) {
-        if (eventHandler === `F${i}`) {
+        if (key === `F${i}`) {
           inputValue.value += "";
           return;
         }
-        if (eventHandler === `Numpad${i}`) {
+        if (key === `Numpad${i}`) {
           inputValue.value += i;
           return;
         }
       }
       if (document.body.classList.contains("off")) {
-        inputValue.value += document.querySelector(`[data-key="${eventHandler}"] .${localStorage.getItem("language")} .shift-off`).innerText;
+        inputValue.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-off`).innerText;
       } else {
-        inputValue.value += document.querySelector(`[data-key="${eventHandler}"] .${localStorage.getItem("language")} .shift-on`).innerText;
+        inputValue.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-on`).innerText;
       }
   }
 };
 
 const keyDownUpMouseClickHandler = (e) => {
   const keysBlock = document.querySelectorAll(".key");
-  const textareaValue = document.querySelector(".text-input");
+  const textarea = document.querySelector(".text-input");
 
   // При нажатии на кнопку клавиатуры
   if (e.type === "keydown") {
@@ -287,7 +287,7 @@ const keyDownUpMouseClickHandler = (e) => {
       }
     }
 
-    handleCases(e.code, "keyboardBtn", textareaValue);
+    handleKey(e.code, "keyboardBtn", textarea);
   }
 
   // При отжатии кнопки на клавиатуре
@@ -320,7 +320,7 @@ const keyDownUpMouseClickHandler = (e) => {
     e.target.closest(".key").classList.add("clicked");
     setTimeout(() => {
       e.target.closest(".key").classList.remove("clicked");
-      handleCases(e.target.closest(".key").getAttribute("data-key"), "mouseCLick", textareaValue);
+      handleKey(e.target.closest(".key").getAttribute("data-key"), "mouseCLick", textarea);
     }, 100);
   }
 };

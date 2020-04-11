@@ -100,11 +100,10 @@ const changeBodyClass = () => {
 };
 
 /* обработка всех кейсов для нажатой клавиши на клавиатуре и при клике на мышке
-(key - событие, setup - мышь или клава, textarea - вэлью textarea) */
+(key - событие, setup - мышь или клава) */
 const handleKey = (key, setup, textarea) => {
   // позиция каретки
   let currentPosition = 0;
-  const inputValue = textarea;
   if (document.selection) {
     textarea.focus();
     const selectionRng = document.selection.createRange();
@@ -129,10 +128,10 @@ const handleKey = (key, setup, textarea) => {
       }
       break;
     case "Space":
-      inputValue.value += " ";
+      textarea.value += " ";
       break;
     case "Tab":
-      inputValue.value += "\t";
+      textarea.value += "\t";
       break;
     case "ShiftRight":
     case "ShiftLeft":
@@ -165,7 +164,7 @@ const handleKey = (key, setup, textarea) => {
             res += textarea.value[i];
           }
         }
-        inputValue.value = res;
+        textarea.value = res;
 
         if (currentPosition !== 0) {
           currentPosition -= 1;
@@ -174,17 +173,17 @@ const handleKey = (key, setup, textarea) => {
       }
       break;
     case "Enter":
-      inputValue.value += "\n";
+      textarea.value += "\n";
       break;
     case "Delete":
       if (textarea.value.length > 0 && currentPosition !== textarea.value.length) {
         let res = "";
         for (let i = 0; i < textarea.value.length; i += 1) {
           if (currentPosition !== i) {
-            res += inputValue.value[i];
+            res += textarea.value[i];
           }
         }
-        inputValue.value = res;
+        textarea.value = res;
         textarea.setSelectionRange(currentPosition, currentPosition);
       }
       break;
@@ -207,22 +206,22 @@ const handleKey = (key, setup, textarea) => {
       }
       break;
     case "NumpadDivide":
-      inputValue.value += "/";
+      textarea.value += "/";
       break;
     case "NumpadMultiply":
-      inputValue.value += "*";
+      textarea.value += "*";
       break;
     case "NumpadSubtract":
-      inputValue.value += "-";
+      textarea.value += "-";
       break;
     case "NumpadAdd":
-      inputValue.value += "+";
+      textarea.value += "+";
       break;
     case "NumpadEnter":
-      inputValue.value += "\n";
+      textarea.value += "\n";
       break;
     case "NumpadDecimal":
-      inputValue.value += ".";
+      textarea.value += ".";
       break;
     case "NumLock":
     case "ControlLeft":
@@ -243,18 +242,18 @@ const handleKey = (key, setup, textarea) => {
       // Отключаем F1-F12, и выводим numpad
       for (let i = 0; i <= 12; i += 1) {
         if (key === `F${i}`) {
-          inputValue.value += "";
+          textarea.value += "";
           return;
         }
         if (key === `Numpad${i}`) {
-          inputValue.value += i;
+          textarea.value += i;
           return;
         }
       }
       if (document.body.classList.contains("off")) {
-        inputValue.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-off`).innerText;
+        textarea.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-off`).innerText;
       } else {
-        inputValue.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-on`).innerText;
+        textarea.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-on`).innerText;
       }
   }
 };

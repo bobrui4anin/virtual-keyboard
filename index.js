@@ -95,7 +95,7 @@ const createAllElementsOnPage = () => {
 };
 
 // меняем у body класс в зависимости от нажатого шифта или CL
-const changeState = () => {
+const changeBodyClass = () => {
   document.body.classList.toggle("off");
 };
 
@@ -117,7 +117,7 @@ const handleKey = (key, setup, textarea) => {
   // обрабатываем функциональные кнопки
   switch (key) {
     case "CapsLock":
-      changeState();
+      changeBodyClass();
       capsLockEntered = !capsLockEntered;
 
       if (setup === "mouseCLick") {
@@ -143,17 +143,17 @@ const handleKey = (key, setup, textarea) => {
       if (setup === "mouseCLick") {
         shiftEntered = true;
         setTimeout(() => {
-          changeState();
+          changeBodyClass();
         }, 10);
         setTimeout(() => {
-          changeState();
+          changeBodyClass();
         }, 100);
         shiftEntered = false;
         return;
       }
 
       shiftEntered = true;
-      changeState();
+      changeBodyClass();
       break;
     case "Backspace":
       if (textarea.value.length > 0) {
@@ -296,7 +296,7 @@ const keyDownUpMouseClickHandler = (e) => {
       case "ShiftRight":
       case "ShiftLeft":
         if (shiftEntered) {
-          changeState();
+          changeBodyClass();
         }
         shiftEntered = false;
         break;

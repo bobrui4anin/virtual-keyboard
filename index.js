@@ -238,7 +238,6 @@ const handleKey = (key, setup, textarea) => {
           return;
         }
         if (i >= 0 && i <= 9 && key === `Numpad${i}`) {
-          console.log(`Numpad${i}`);
           textarea.value += i;
           return;
         }
@@ -251,23 +250,17 @@ const handleKey = (key, setup, textarea) => {
   }
 };
 
-const keyDownUpMouseClickHandler = (e) => {
-  const keysBlock = document.querySelectorAll(".key");
-  const textarea = document.querySelector(".text-input");
-
-  // При нажатии на кнопку клавиатуры
-  if (e.type === "keydown") {
+const keyDownHandler = (keysBlock, event, textarea) => {
+  if (event.type === "keydown") {
     keysBlock.forEach((keyBlock) => {
-      if (keyBlock.getAttribute("data-key") === e.code) {
+      if (keyBlock.getAttribute("data-key") === event.code) {
         setTimeout(() => {
           keyBlock.classList.add("clicked");
         }, 10);
       }
     });
-    e.preventDefault();
-
     // переключение языка и перерендеринг элементов
-    if (e.altKey && e.ctrlKey) {
+    if (event.altKey && event.ctrlKey) {
       if (localStorage.getItem("language") === "ru") {
         localStorage.setItem("language", "eng");
         document.body.classList.add("lng-eng");
@@ -279,12 +272,13 @@ const keyDownUpMouseClickHandler = (e) => {
       }
     }
 
-    handleKey(e.code, "keyboardBtn", textarea);
+    handleKey(event.code, "keyboardBtn", textarea);
   }
+};
 
-  // При отжатии кнопки на клавиатуре
-  if (e.type === "keyup") {
-    switch (e.code) {
+const keyUpHandler = (keysBlock, event) => {
+  if (event.type === "keyup") {
+    switch (event.code) {
       case "ShiftRight":
       case "ShiftLeft":
         if (shiftEntered) {
@@ -296,9 +290,9 @@ const keyDownUpMouseClickHandler = (e) => {
     }
 
     for (let i = 0; i < keysBlock.length; i += 1) {
-      if (keysBlock[i].getAttribute("data-key") === e.code) {
+      if (keysBlock[i].getAttribute("data-key") === event.code) {
         // Обрабатываем нажатие capslock, если нажали 1ый раз, то оставляем его активным
-        if (!(e.code === "CapsLock" && capsLockEntered)) {
+        if (!(event.code === "CapsLock" && capsLockEntered)) {
           setTimeout(() => {
             keysBlock[i].classList.remove("clicked");
           }, 150);
@@ -306,15 +300,28 @@ const keyDownUpMouseClickHandler = (e) => {
       }
     }
   }
+};
 
-  // Клик мыши
-  if (e.type === "click" && e.target.tagName === "SPAN") {
-    e.target.closest(".key").classList.add("clicked");
+const mouseClickHandler = (event, textarea) => {
+  if (event.type === "click" && event.target.tagName === "SPAN") {
+    event.target.closest(".key").classList.add("clicked");
     setTimeout(() => {
-      e.target.closest(".key").classList.remove("clicked");
-      handleKey(e.target.closest(".key").getAttribute("data-key"), "mouseCLick", textarea);
+      event.target.closest(".key").classList.remove("clicked");
+      handleKey(event.target.closest(".key").getAttribute("data-key"), "mouseCLick", textarea);
     }, 100);
   }
+};
+
+const keyDownUpMouseClickHandler = (e) => {
+  const keysBlock = document.querySelectorAll(".key");
+  const textarea = document.querySelector(".text-input");
+  e.preventDefault();
+  // При нажатии на кнопку клавиатуры
+  keyDownHandler(keysBlock, e, textarea);
+  // При отжатии кнопки на клавиатуре
+  keyUpHandler(keysBlock, e);
+  // Клик мыши
+  mouseClickHandler(e, textarea);
 };
 
 const onLoadState = () => {

@@ -235,7 +235,6 @@ const handleKey = (key, setup, textarea) => {
       // Отключаем F1-F12, и выводим numpad
       for (let i = 0; i <= 12; i += 1) {
         if (key === `F${i}`) {
-          textarea.value += "";
           return;
         }
         if (key === `Numpad${i}`) {

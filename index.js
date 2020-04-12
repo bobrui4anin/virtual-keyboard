@@ -170,15 +170,7 @@ const handleKey = (key, setup, textarea) => {
       break;
     case "Backspace":
       if (textarea.value.length > 0 && currentPosition !== 0) {
-        let res = "";
-        for (let i = 0; i < textarea.value.length; i += 1) {
-          if (currentPosition - 1 === i) {
-            res += "";
-          } else {
-            res += textarea.value[i];
-          }
-        }
-        textarea.value = res;
+        textarea.value = `${textarea.value.slice(0, currentPosition - 1)}${textarea.value.slice(currentPosition)}`;
         currentPosition -= 1;
         textarea.setSelectionRange(currentPosition, currentPosition);
       }

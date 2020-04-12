@@ -66,18 +66,18 @@ const createAllElementsOnPage = () => {
     template += `
             <div class="key" data-key="${keysObj.keyCodes[i]}">
                 <span class="ru">
-                    <span class="shift-on">
+                    <span class="shift-on mouse-click">
                         ${keysObj.ru[i]}
                     </span>
-                    <span class="shift-off">
+                    <span class="shift-off mouse-click">
                         ${keysObj.ruShift[i]}
                     </span>
                 </span>
                 <span class="eng">
-                    <span class="shift-on">
+                    <span class="shift-on mouse-click">
                         ${keysObj.eng[i]}
                     </span>
-                    <span class="shift-off">
+                    <span class="shift-off mouse-click">
                         ${keysObj.engShift[i]}
                     </span>
                 </span>
@@ -309,7 +309,7 @@ const keyUpHandler = (keysBlock, event) => {
 };
 
 const mouseClickHandler = (event, textarea) => {
-  if (event.type === "click" && event.target.tagName === "SPAN") {
+  if (event.type === "click" && event.target.classList.contains("mouse-click")) {
     event.target.closest(".key").classList.add("clicked");
     setTimeout(() => {
       event.target.closest(".key").classList.remove("clicked");

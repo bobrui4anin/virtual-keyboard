@@ -2,6 +2,7 @@ html {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    box-sizing: border-box;
 }
 
 body {
@@ -45,6 +46,13 @@ body {
     resize: none;
 }
 
+.clicked {
+    background-color: #3cf63c;
+    color: #fff;
+    transition: all .2s ease;
+    box-shadow: 1px 1px 15px 5px #3cf63c;
+}
+
 .key {
     transition: all .2s ease;
 }
@@ -72,13 +80,6 @@ body {
 
 [data-key="Space"] {
     flex-basis: 50%;
-}
-
-.clicked {
-    background-color: #3cf63c;
-    color: #fff;
-    transition: all .2s ease;
-    box-shadow: 1px 1px 15px 5px #3cf63c;
 }
 
 .keyboard {

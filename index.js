@@ -99,13 +99,27 @@ const changeBodyClass = () => {
   document.body.classList.toggle("off");
 };
 
+// Запись вводимого значения в место, где находится коретка
+const writeTextInCurrentPosition = (currentPosition, textarea, activeElementValue) => {
+  const leftPartValue = textarea.value.substring(0, currentPosition);
+  const rightPartValue = textarea.value.substring(currentPosition, textarea.value.length);
+  if (currentPosition > 0 && currentPosition !== textarea.value.length) {
+    textarea.value = leftPartValue + activeElementValue + rightPartValue;
+  } else if (currentPosition === 0) {
+    textarea.value = activeElementValue + rightPartValue;
+  } else {
+    textarea.value += activeElementValue;
+  }
+  textarea.setSelectionRange(currentPosition + 1, currentPosition + 1);
+};
+
 /* обработка всех кейсов для нажатой клавиши на клавиатуре и при клике на мышке
 (key - событие, setup - мышь или клава) */
 const handleKey = (key, setup, textarea) => {
   // позиция каретки
   let currentPosition = 0;
+  textarea.focus();
   if (document.selection) {
-    textarea.focus();
     const selectionRng = document.selection.createRange();
     selectionRng.moveStart("character", -textarea.value.length);
     currentPosition = selectionRng.text.length;
@@ -128,10 +142,10 @@ const handleKey = (key, setup, textarea) => {
       }
       break;
     case "Space":
-      textarea.value += " ";
+      writeTextInCurrentPosition(currentPosition, textarea, " ");
       break;
     case "Tab":
-      textarea.value += "\t";
+      writeTextInCurrentPosition(currentPosition, textarea, "\t");
       break;
     case "ShiftRight":
     case "ShiftLeft":
@@ -170,7 +184,7 @@ const handleKey = (key, setup, textarea) => {
       }
       break;
     case "Enter":
-      textarea.value += "\n";
+      writeTextInCurrentPosition(currentPosition, textarea, "\n");
       break;
     case "Delete":
       if (textarea.value.length > 0 && currentPosition !== textarea.value.length) {
@@ -199,22 +213,22 @@ const handleKey = (key, setup, textarea) => {
       textarea.setSelectionRange(currentPosition, currentPosition);
       break;
     case "NumpadDivide":
-      textarea.value += "/";
+      writeTextInCurrentPosition(currentPosition, textarea, "/");
       break;
     case "NumpadMultiply":
-      textarea.value += "*";
+      writeTextInCurrentPosition(currentPosition, textarea, "*");
       break;
     case "NumpadSubtract":
-      textarea.value += "-";
+      writeTextInCurrentPosition(currentPosition, textarea, "-");
       break;
     case "NumpadAdd":
-      textarea.value += "+";
+      writeTextInCurrentPosition(currentPosition, textarea, "+");
       break;
     case "NumpadEnter":
-      textarea.value += "\n";
+      writeTextInCurrentPosition(currentPosition, textarea, "\n");
       break;
     case "NumpadDecimal":
-      textarea.value += ".";
+      writeTextInCurrentPosition(currentPosition, textarea, ".");
       break;
     case "NumLock":
     case "ControlLeft":
@@ -238,14 +252,14 @@ const handleKey = (key, setup, textarea) => {
           return;
         }
         if (i >= 0 && i <= 9 && key === `Numpad${i}`) {
-          textarea.value += i;
+          writeTextInCurrentPosition(currentPosition, textarea, i);
           return;
         }
       }
       if (document.body.classList.contains("off")) {
-        textarea.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-off`).innerText;
+        writeTextInCurrentPosition(currentPosition, textarea, document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-off`).innerText);
       } else {
-        textarea.value += document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-on`).innerText;
+        writeTextInCurrentPosition(currentPosition, textarea, document.querySelector(`[data-key="${key}"] .${localStorage.getItem("language")} .shift-on`).innerText);
       }
   }
 };

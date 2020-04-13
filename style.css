@@ -1,0 +1,103 @@
+html {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    background: cadetblue;
+}
+
+/* Классы (.off, .lng-eng, .lng-ru) - относятся к body */
+.shift-on,
+.off .shift-off {
+    min-width: 40px;
+    height: 40px;
+    border: 1px solid green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 1px 4px 2px;
+}
+
+.off .shift-on,
+.shift-off,
+.lng-eng .ru,
+.lng-ru .eng {
+    display: none;
+}
+
+.container {
+    margin: 0 auto;
+    width: 650px;
+}
+
+.text-input {
+    width: 653px;
+    height: 250px;
+    margin-bottom: 25px;
+    background: black;
+    color: #fff;
+    border: none;
+    padding: 20px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.clicked {
+    background-color: #3cf63c;
+    color: #fff;
+    transition: all .2s ease;
+    box-shadow: 1px 1px 15px 5px #3cf63c;
+}
+
+.key {
+    transition: all .2s ease;
+}
+
+.key:hover {
+    cursor: pointer;
+    background-color: #3cf63c;
+    opacity: .7;
+}
+
+[data-key="Backspace"],
+[data-key="Tab"] {
+    flex-basis: 20%;
+}
+
+[data-key="Enter"],
+[data-key="ShiftRight"] {
+    flex-basis: 12.93%;
+}
+
+[data-key="CapsLock"],
+[data-key="ShiftLeft"] {
+    flex-basis: 16%;
+}
+
+[data-key="Space"] {
+    flex-basis: 50%;
+}
+
+.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    width: 650px;
+}
+
+.keyboard::after {
+    content: 'Переключение языка происходит при нажатии Ctr + Alt. Клавиатура создавалась под windows';
+    color: #fff;
+    transition: all .2s ease;
+    text-shadow: 6px 0px 16px #3cf63c;
+    margin: 50px 0 0;
+    font-size: 16px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+}

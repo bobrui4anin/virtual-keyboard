@@ -3,13 +3,12 @@ let capsLockEntered = false;
 
 // проверяем язык в localstorage, если его нету, то устанавливаем дефолтный
 // Возможные языки ru / eng
-// Добавляем body активный класс
 if (localStorage.getItem("language") === null) {
   localStorage.setItem("language", "ru");
-  document.body.classList.add(`lng-${localStorage.getItem("language")}`);
-} else {
-  document.body.classList.add(`lng-${localStorage.getItem("language")}`);
 }
+
+// Добавляем body активный класс
+document.body.classList.add(`lng-${localStorage.getItem("language")}`);
 
 const keysObj = {
   ru: ["ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace",
